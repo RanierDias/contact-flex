@@ -1,0 +1,16 @@
+@use "../../mixins"
+@use "../../color"
+
+.footer
+    color: color.$white
+    background-color: color.$black
+
+    .container
+        div
+            text-align: center
+
+.container
+    @include mixins.container
+    @include mixins.flex-center
+    flex-direction: column
+    gap: 12px

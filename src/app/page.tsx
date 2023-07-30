@@ -1,95 +1,74 @@
-import Image from 'next/image'
-import styles from './page.module.css'
+import Footer from "@/components/footer";
+import Navbar from "@/components/navbar";
+import Link from "next/link";
+import style from "@/sass/pages/landing/style.module.sass";
+import TitleCards from "@/components/titleCard";
+import {
+  MdOutlineFreeBreakfast,
+  MdUpdate,
+  MdOutlinePersonSearch,
+} from "react-icons/md";
+import { BsPersonCheck } from "react-icons/bs";
+import { RiTimerFlashLine } from "react-icons/ri";
 
-export default function Home() {
+export default function Landing() {
   return (
-    <main className={styles.main}>
-      <div className={styles.description}>
-        <p>
-          Get started by editing&nbsp;
-          <code className={styles.code}>src/app/page.tsx</code>
-        </p>
-        <div>
-          <a
-            href="https://vercel.com?utm_source=create-next-app&utm_medium=appdir-template&utm_campaign=create-next-app"
-            target="_blank"
-            rel="noopener noreferrer"
-          >
-            By{' '}
-            <Image
-              src="/vercel.svg"
-              alt="Vercel Logo"
-              className={styles.vercelLogo}
-              width={100}
-              height={24}
-              priority
-            />
-          </a>
+    <>
+      <Navbar />
+
+      <main className={style.main}>
+        <div className={style.container}>
+          <section>
+            <h2>Contact Flex alinhando com você!</h2>
+            <p>
+              A Contact Flex oferece uma série de benefícios e vantagens que
+              tornam a organização e o acesso às informações de contato mais
+              eficientes e convenientes.
+            </p>
+
+            <p>
+              O processo de cadastro de usuário na Contact Flex oferece uma
+              experiência eficiente e vantajosa para os usuários.
+            </p>
+
+            <Link href="#about">Veja mais</Link>
+          </section>
         </div>
-      </div>
 
-      <div className={styles.center}>
-        <Image
-          className={styles.logo}
-          src="/next.svg"
-          alt="Next.js Logo"
-          width={180}
-          height={37}
-          priority
-        />
-      </div>
+        <div className={style.container_about}>
+          <section id="about">
+            <h2>Gereciamento de contatos</h2>
 
-      <div className={styles.grid}>
-        <a
-          href="https://nextjs.org/docs?utm_source=create-next-app&utm_medium=appdir-template&utm_campaign=create-next-app"
-          className={styles.card}
-          target="_blank"
-          rel="noopener noreferrer"
-        >
-          <h2>
-            Docs <span>-&gt;</span>
-          </h2>
-          <p>Find in-depth information about Next.js features and API.</p>
-        </a>
+            <div>
+              <TitleCards icon={MdOutlineFreeBreakfast}>
+                Centralização e Organização de Contatos
+              </TitleCards>
 
-        <a
-          href="https://nextjs.org/learn?utm_source=create-next-app&utm_medium=appdir-template&utm_campaign=create-next-app"
-          className={styles.card}
-          target="_blank"
-          rel="noopener noreferrer"
-        >
-          <h2>
-            Learn <span>-&gt;</span>
-          </h2>
-          <p>Learn about Next.js in an interactive course with&nbsp;quizzes!</p>
-        </a>
+              <TitleCards icon={RiTimerFlashLine}>
+                Acesso Instantâneo aos Dados
+              </TitleCards>
 
-        <a
-          href="https://vercel.com/templates?framework=next.js&utm_source=create-next-app&utm_medium=appdir-template&utm_campaign=create-next-app"
-          className={styles.card}
-          target="_blank"
-          rel="noopener noreferrer"
-        >
-          <h2>
-            Templates <span>-&gt;</span>
-          </h2>
-          <p>Explore the Next.js 13 playground.</p>
-        </a>
+              <TitleCards icon={MdUpdate}>
+                Atualizações em Tempo Real
+              </TitleCards>
+            </div>
 
-        <a
-          href="https://vercel.com/new?utm_source=create-next-app&utm_medium=appdir-template&utm_campaign=create-next-app"
-          className={styles.card}
-          target="_blank"
-          rel="noopener noreferrer"
-        >
-          <h2>
-            Deploy <span>-&gt;</span>
-          </h2>
-          <p>
-            Instantly deploy your Next.js site to a shareable URL with Vercel.
-          </p>
-        </a>
-      </div>
-    </main>
-  )
+            <h2>Cadrasto de contatos</h2>
+
+            <div>
+              <TitleCards icon={BsPersonCheck}>
+                Cadastro Simplificado e Rápido
+              </TitleCards>
+
+              <TitleCards icon={MdOutlinePersonSearch}>
+                Maior Consistência e Precisão dos Dados
+              </TitleCards>
+            </div>
+          </section>
+        </div>
+      </main>
+
+      <Footer />
+    </>
+  );
 }

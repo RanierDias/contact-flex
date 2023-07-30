@@ -1,0 +1,38 @@
+@use "../../color"
+@use "../../mixins"
+
+.navbar
+    color: color.$white
+    background-color: color.$secondary
+
+    .container
+        h1
+            display: flex
+            gap: 6px
+            width: max-content
+            padding-left: 6px
+            border: 2px solid color.$white
+            border-radius: 4px
+
+            div
+                width: max-content
+                padding: 0 4px
+                background-color: color.$white
+
+                span
+                    color: color.$secondary
+        nav
+            display: flex
+            gap: 12px
+
+            button
+                padding: 4px 8px
+                font-size: 1rem
+                color: color.$white
+                border: none
+                border-radius: 4px
+                background-color: color.$button-opacity
+
+.container
+    @include mixins.container
+    @include mixins.flex-center

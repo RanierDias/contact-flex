@@ -1,0 +1,102 @@
+@use "../../color"
+@use "../../mixins"
+
+.home
+    height: 100vh
+    .container
+        > div
+            @include mixins.flex-center
+            gap: 12px
+            margin: 0 auto
+            padding: 8px 12px
+            width: max-content
+            border-radius: 8px
+            background-color: color.$secondary
+
+            > input
+                outline: none
+                color: color.$white
+                border: none
+                background: none
+
+        > section
+            @include mixins.flex-center
+            flex-direction: column
+            margin: 25px 0
+            height: 90%
+
+            ul
+                @include mixins.flex-center
+                flex-direction: column
+                gap: 14px
+                overflow: scroll
+
+                @include mixins.desktop
+                    flex-direction: row
+
+            > ul + svg
+                height: 30px
+                width: 30px
+                animation: loading .5s infinite
+
+            > button
+                position: sticky
+                bottom: 45px
+                align-self: flex-end
+                margin-top: 20px
+                padding: 8px
+                color: color.$white
+                border-radius: 8px
+                border: 2px solid color.$secondary
+                background-color: color.$brand
+
+                svg
+                    width: 20px
+                    height: 20px
+
+.modal
+    position: fixed
+    display: flex
+    align-items: center
+    justify-content: center
+    height: 100vh
+    width: 100vw
+    background-color: #2121212a
+
+    > div
+        display: flex
+        flex-direction: column
+        gap: 22px
+        padding: 16px 22px
+        border-radius: 8px
+        background-color: color.$brand
+
+        h3
+            text-align: center
+            font-weight: 600
+            color: color.$white
+
+        form
+            @include mixins.form-column
+
+            > div
+                display: flex
+                gap: 12px
+
+            > button
+                align-self: center
+                width: 50px
+
+            > div:last-child
+                background: none
+
+.container
+    @include mixins.container
+    height: 100%
+
+@keyframes loading
+    0%
+        transform: rotate(30deg)
+
+    100%
+        transform: rotate(360deg)
