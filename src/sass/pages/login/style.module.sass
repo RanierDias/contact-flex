@@ -1,0 +1,24 @@
+@use "../../color"
+@use "../../mixins"
+
+.login
+    height: 100vh
+
+    .container
+        div
+            display: flex
+            flex-direction: column
+            gap: 10px
+            margin: 0 auto
+            margin-bottom: 28px
+            width: 320px
+
+            small
+                font-weight: 400
+
+        form
+            @include mixins.form-column
+
+.container
+    @include mixins.container
+    margin-top: 20vh

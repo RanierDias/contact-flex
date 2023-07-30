@@ -1,0 +1,25 @@
+@use 'display'
+@use 'color'
+
+h1
+    font-size: display.$title-1
+
+h2
+    font-size: display.$title-2
+
+h3
+    font-size: display.$title-3
+
+p, h4, span
+    font-size: display.$font
+
+small
+    font-size: display.$font-small
+
+*
+    box-sizing: border-box
+
+body
+    display: flex
+    flex-direction: column
+    justify-content: space-between

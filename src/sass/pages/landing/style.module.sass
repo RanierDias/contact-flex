@@ -1,0 +1,51 @@
+@use "../../color"
+@use "../../mixins"
+
+.main
+    height: max-content
+    min-height: 100vh
+
+    .container
+        section
+            color: color.$white
+
+            h2
+                margin-bottom: 12px
+
+            p
+                line-height: 22px
+                margin-bottom: 6px
+
+            p + p
+                margin-bottom: 16px
+
+            a
+                padding: 6px 12px
+                border-radius: 4px
+                background-color: color.$button-opacity
+
+    .container_about
+        section
+            @include mixins.flex-center
+            flex-direction: column
+            gap: 24px
+
+            div
+                @include mixins.flex-center
+                flex-direction: column
+                gap: 12px
+
+                @include mixins.desktop
+                    flex-direction: row
+
+.container
+    @include mixins.container
+    background-image: url("../../../assets/bg-landing.png")
+    background-repeat: no-repeat
+    background-position: center
+    background-size: cover
+    background-blend-mode: multiply
+    background-color: #212121c1
+
+.container_about
+    @include mixins.container
