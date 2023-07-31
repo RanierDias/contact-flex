@@ -9,7 +9,7 @@ import { useEffect, useState } from "react";
 import apiContact from "@/api/contact";
 import { isAxiosError } from "axios";
 import IContactResponse, { ICreateContact } from "./interfaces";
-import { AiOutlineLoading, AiOutlineUser, AiOutlineMail } from "react-icons/ai";
+import { AiOutlineUser, AiOutlineMail } from "react-icons/ai";
 import { SubmitHandler, useForm } from "react-hook-form";
 import { BsTelephone } from "react-icons/bs";
 import createContactSchema from "./schema";
@@ -19,7 +19,7 @@ export default function Home() {
   const [contactList, setContactList] = useState<IContactResponse[]>([]);
   const [openModal, setOpenModal] = useState(false);
   const [emailField, setEmailField] = useState(false);
-  const [search, setSearch] = useState<ICreateContact[]>([]);
+  const [search, setSearch] = useState<IContactResponse[]>([]);
   const {
     register,
     handleSubmit,
@@ -49,6 +49,15 @@ export default function Home() {
     }
   };
 
+  function searchContact(data: string) {
+    const searchFormated = data.toLowerCase();
+    const contactsFound = contactList.filter((contact) =>
+      contact.fullname.toLowerCase().includes(searchFormated)
+    );
+
+    setSearch(contactsFound);
+  }
+
   useEffect(() => {
     async function getContacts(): Promise<void> {
       try {
@@ -76,16 +85,22 @@ export default function Home() {
 
       <main className={style.home}>
         <div className={style.container}>
-          <div>
-            <input type="text" placeholder="Pesquisar pelo nome..." />
-            <button>
+          <form onSubmit={(e) => e.preventDefault()}>
+            <input
+              type="text"
+              onChange={(element) => searchContact(element.target.value)}
+              placeholder="Pesquisar pelo nome..."
+              name="search"
+            />
+            <button type="submit">
               <IoSearchOutline />
             </button>
-          </div>
+          </form>
 
           <section>
             <ul>
-              {contactList.length > 0 ? (
+              {contactList.length > 0 &&
+                search.length == 0 &&
                 contactList.map((contact) => (
                   <ContactCard
                     contact={contact}
@@ -93,10 +108,21 @@ export default function Home() {
                     listContact={contactList}
                     key={contact.id}
                   />
-                ))
-              ) : (
+                ))}
+
+              {search.length > 0 &&
+                search.map((contact) => (
+                  <ContactCard
+                    contact={contact}
+                    setListContact={setContactList}
+                    listContact={contactList}
+                    key={contact.id}
+                  />
+                ))}
+
+              {search.length == 0 && contactList.length == 0 ? (
                 <li>Sem contatos por hoje</li>
-              )}
+              ) : null}
             </ul>
 
             <button onClick={() => setOpenModal(true)}>
