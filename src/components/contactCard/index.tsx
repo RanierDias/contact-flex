@@ -5,6 +5,7 @@ import style from "@/sass/components/contactCard/style.module.sass";
 import { isAxiosError } from "axios";
 import { AiFillPhone, AiFillMail } from "react-icons/ai";
 import { BsFillTelephoneXFill } from "react-icons/bs";
+import { toast } from "react-toastify";
 
 interface IProps {
   contact: IContact;
@@ -38,8 +39,14 @@ export default function ContactCard({
       setListContact(newListContact);
     } catch (error) {
       if (isAxiosError(error)) {
-        console.log(error);
+        const message: string = error.response?.data.message;
+
+        toast.error(message);
       }
+
+      toast.error(
+        "Desculpe, nosso servidor esta com problemas. Tente mais tarde!"
+      );
     }
   }
 
