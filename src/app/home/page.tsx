@@ -14,6 +14,7 @@ import { SubmitHandler, useForm } from "react-hook-form";
 import { BsTelephone } from "react-icons/bs";
 import createContactSchema from "./schema";
 import { zodResolver } from "@hookform/resolvers/zod";
+import { toast } from "react-toastify";
 
 export default function Home() {
   const [contactList, setContactList] = useState<IContactResponse[]>([]);
@@ -44,8 +45,14 @@ export default function Home() {
         : setContactList([contactCreated.data]);
     } catch (error) {
       if (isAxiosError(error)) {
-        console.log(error.status);
+        const message: string = error.response?.data.message;
+
+        toast.error(message);
       }
+
+      toast.error(
+        "Desculpe, nosso servidor esta com problemas. Tente mais tarde!"
+      );
     }
   };
 
@@ -71,8 +78,14 @@ export default function Home() {
         setContactList(contacts.data);
       } catch (error) {
         if (isAxiosError(error)) {
-          console.log(error.status);
+          const message: string = error.response?.data.message;
+
+          toast.error(message);
         }
+
+        toast.error(
+          "Desculpe, nosso servidor esta com problemas. Tente mais tarde!"
+        );
       }
     }
 

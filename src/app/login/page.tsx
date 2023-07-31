@@ -13,6 +13,7 @@ import { ILogin, ILoginResponse } from "./interfaces";
 import { zodResolver } from "@hookform/resolvers/zod";
 import loginSchema from "./schema";
 import { useRouter } from "next/navigation";
+import { ToastContainer, toast } from "react-toastify";
 
 export default function Home() {
   const {
@@ -32,8 +33,14 @@ export default function Home() {
       router.push("/home");
     } catch (error) {
       if (isAxiosError(error)) {
-        error.status == 401;
+        const message: string = error.response?.data.message;
+
+        toast(message);
       }
+
+      toast.error(
+        "Desculpe, nosso servidor esta com problemas. Tente mais tarde!"
+      );
     }
   };
 

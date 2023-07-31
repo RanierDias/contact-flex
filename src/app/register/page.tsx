@@ -12,6 +12,7 @@ import apiContact from "@/api/contact";
 import { useRouter } from "next/navigation";
 import { ILoginResponse } from "../login/interfaces";
 import { isAxiosError } from "axios";
+import { toast } from "react-toastify";
 
 export default function () {
   const {
@@ -34,8 +35,14 @@ export default function () {
       router.push("/home");
     } catch (error) {
       if (isAxiosError(error)) {
-        console.log(error);
+        const message: string = error.response?.data.message;
+
+        toast.error(message);
       }
+
+      toast.error(
+        "Desculpe, nosso servidor esta com problemas. Tente mais tarde!"
+      );
     }
   };
 
