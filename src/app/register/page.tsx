@@ -1,8 +1,9 @@
 "use client";
 import Footer from "@/components/footer";
 import Navbar from "@/components/navbar";
-import { AiOutlineUser } from "react-icons/ai";
+import { AiOutlineUser, AiOutlineMail, AiOutlinePhone } from "react-icons/ai";
 import { RiLockPasswordLine } from "react-icons/ri";
+import { BsPersonBadge } from "react-icons/bs";
 import style from "@/sass/pages/register/style.module.sass";
 import { SubmitHandler, useForm } from "react-hook-form";
 import { IRegister, IRegisterResponse } from "./interface";
@@ -35,14 +36,18 @@ export default function () {
       router.push("/home");
     } catch (error) {
       if (isAxiosError(error)) {
-        const message: string = error.response?.data.message;
+        if (error.status === 400) {
+          const messages: string[] = error.response?.data.message;
 
-        toast.error(message);
+          messages.forEach((message) => toast.error(message));
+        }
+
+        if (error.status === undefined) {
+          toast.error(
+            "Desculpe, nosso servidor esta com problemas. Tente mais tarde!"
+          );
+        }
       }
-
-      toast.error(
-        "Desculpe, nosso servidor esta com problemas. Tente mais tarde!"
-      );
     }
   };
 
@@ -69,7 +74,7 @@ export default function () {
             {errors.username && <small>{errors.username.message}</small>}
 
             <div>
-              <AiOutlineUser />
+              <BsPersonBadge />
               <input
                 type="text"
                 placeholder="Nome completo"
@@ -79,7 +84,7 @@ export default function () {
             {errors.fullname && <small>{errors.fullname.message}</small>}
 
             <div>
-              <AiOutlineUser />
+              <AiOutlineMail />
               <input
                 type="text"
                 placeholder="example@mail.cm"
@@ -89,7 +94,7 @@ export default function () {
             {errors.email && <small>{errors.email.message}</small>}
 
             <div>
-              <AiOutlineUser />
+              <AiOutlinePhone />
               <input
                 type="text"
                 placeholder="(DD) xxxx-xxxx"

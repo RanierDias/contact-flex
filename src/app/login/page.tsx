@@ -8,12 +8,11 @@ import style from "@/sass/pages/login/style.module.sass";
 import { SubmitHandler, useForm } from "react-hook-form";
 import apiContact from "@/api/contact";
 import { isAxiosError } from "axios";
-import { useState } from "react";
 import { ILogin, ILoginResponse } from "./interfaces";
 import { zodResolver } from "@hookform/resolvers/zod";
 import loginSchema from "./schema";
 import { useRouter } from "next/navigation";
-import { ToastContainer, toast } from "react-toastify";
+import { toast } from "react-toastify";
 
 export default function Home() {
   const {
@@ -33,14 +32,18 @@ export default function Home() {
       router.push("/home");
     } catch (error) {
       if (isAxiosError(error)) {
-        const message: string = error.response?.data.message;
+        if (error.status === 401) {
+          const message: string = error.response?.data.message;
 
-        toast(message);
+          toast(message);
+        }
+
+        if (error.status === undefined) {
+          toast.error(
+            "Desculpe, nosso servidor esta com problemas. Tente mais tarde!"
+          );
+        }
       }
-
-      toast.error(
-        "Desculpe, nosso servidor esta com problemas. Tente mais tarde!"
-      );
     }
   };
 
