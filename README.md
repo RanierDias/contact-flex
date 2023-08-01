@@ -1,4 +1,4 @@
-Este é um pequeno projeto MVP com alguns pequenos recursos como login e cadastro de usuários. O Contact Flex é um site de gerenciamento de contatos onde você pode armazenar seus contatos, criando e deletando-os. Este é uma projeto Full Stack onde foi montado uma api com ele em uma semana.
+Este é um pequeno projeto MVP com alguns pequenos recursos como login e cadastro de usuários. O Contact Flex é um site de gerenciamento de contatos onde você pode armazenar seus contatos, criando e deletando-os. Este é uma projeto Full Stack onde foi montado tambem uma api com ele em paralelo.
 
 ## Iniciando Projeto
 
