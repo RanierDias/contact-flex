@@ -38,7 +38,7 @@ export default function Home() {
           toast(message);
         }
 
-        if (error.status === undefined) {
+        if (error.status === 501) {
           toast.error(
             "Desculpe, nosso servidor esta com problemas. Tente mais tarde!"
           );

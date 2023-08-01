@@ -21,16 +21,24 @@ export default function Navbar() {
             <span>Flex</span>
           </div>
         </h1>
-        {pathRouter == "/home" ? (
-          <nav>
+
+        <nav>
+          {pathRouter == "/home" && (
             <button onClick={() => logout()}>Logout</button>
-          </nav>
-        ) : (
-          <nav>
+          )}
+
+          {(pathRouter == "/" || pathRouter == "/register") && (
             <Link href="/login">Entrar</Link>
+          )}
+
+          {(pathRouter == "/login" || pathRouter == "/register") && (
+            <Link href="/">Home</Link>
+          )}
+
+          {(pathRouter == "/" || pathRouter == "/login") && (
             <Link href="/register">Cadastrar</Link>
-          </nav>
-        )}
+          )}
+        </nav>
       </div>
     </header>
   );
