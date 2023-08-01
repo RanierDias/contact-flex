@@ -12,9 +12,11 @@ import IContactResponse, { ICreateContact } from "./interfaces";
 import { AiOutlineUser, AiOutlineMail } from "react-icons/ai";
 import { SubmitHandler, useForm } from "react-hook-form";
 import { BsTelephone } from "react-icons/bs";
-import createContactSchema from "./schema";
+import contactSchema from "./schema";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { toast } from "react-toastify";
+import ModalContainer from "@/components/modal";
+import { useRouter } from "next/navigation";
 
 export default function Home() {
   const [contactList, setContactList] = useState<IContactResponse[]>([]);
@@ -27,9 +29,10 @@ export default function Home() {
     reset,
     formState: { errors, isSubmitSuccessful },
   } = useForm<ICreateContact>({
-    resolver: zodResolver(createContactSchema),
+    resolver: zodResolver(contactSchema),
     defaultValues: { email: "user@mail.com" },
   });
+  const router = useRouter();
 
   const createContact: SubmitHandler<ICreateContact> = async (data) => {
     try {
@@ -46,9 +49,8 @@ export default function Home() {
         }
       );
 
-      contactList
-        ? setContactList([...contactList, contactCreated.data])
-        : setContactList([contactCreated.data]);
+      setContactList([...contactList, contactCreated.data]);
+      search.length > 0 ? setSearch([...search, contactCreated.data]) : false;
     } catch (error) {
       if (isAxiosError(error)) {
         if (error.status === 400) {
@@ -63,7 +65,7 @@ export default function Home() {
           toast.error(message);
         }
 
-        if (error.status === undefined) {
+        if (error.status === 501) {
           toast.error(
             "Desculpe, nosso servidor esta com problemas. Tente mais tarde!"
           );
@@ -82,9 +84,12 @@ export default function Home() {
   }
 
   useEffect(() => {
+    const token = localStorage.getItem("token");
+
+    !token ? router.push("/login") : false;
+
     async function getContacts(): Promise<void> {
       try {
-        const token = localStorage.getItem("token");
         const contacts = await apiContact.get<IContactResponse[]>("contacts", {
           headers: {
             Authorization: `Bearer ${token}`,
@@ -95,15 +100,18 @@ export default function Home() {
       } catch (error) {
         if (isAxiosError(error)) {
           if (error.status === 401) {
-            const message: string = error.response?.data.message;
-
-            toast.error(message);
+            router.push("/");
           }
 
-          if (error.status === undefined) {
+          if (error.status === 501) {
             toast.error(
               "Desculpe, nosso servidor esta com problemas. Tente mais tarde!"
             );
+          }
+
+          if (error.status === undefined) {
+            localStorage.clear();
+            router.push("/");
           }
         }
       }
@@ -157,9 +165,7 @@ export default function Home() {
                   />
                 ))}
 
-              {search.length == 0 && contactList.length == 0 ? (
-                <li>Sem contatos por hoje</li>
-              ) : null}
+              {contactList.length == 0 && <li>Sem contatos por hoje</li>}
             </ul>
 
             <button onClick={() => setOpenModal(true)}>
@@ -170,56 +176,58 @@ export default function Home() {
       </main>
 
       {openModal && (
-        <section className={style.modal}>
-          <div>
-            <h3>Adcionar contato</h3>
-            <form onSubmit={handleSubmit(createContact)}>
-              <div>
-                <AiOutlineUser />
-                <input
-                  type="text"
-                  placeholder="Nome completo"
-                  {...register("fullname")}
-                />
-              </div>
-              {errors.fullname && <small>{errors.fullname.message}</small>}
+        <ModalContainer>
+          <h3 className={style.title_modal}>Adcionar contato</h3>
 
-              <div>
-                <BsTelephone />
-                <input
-                  type="text"
-                  placeholder="(DD) xxxx-xxxx"
-                  {...register("phone")}
-                />
-              </div>
-              {errors.phone && <small>{errors.phone.message}</small>}
+          <form
+            className={style.form_modal}
+            onSubmit={handleSubmit(createContact)}
+          >
+            <div>
+              <AiOutlineUser />
+              <input
+                type="text"
+                placeholder="Nome completo"
+                {...register("fullname")}
+              />
+            </div>
+            {errors.fullname && <small>{errors.fullname.message}</small>}
 
-              <button onClick={() => setEmailField(!emailField)} type="button">
-                <AiOutlineMail />
-              </button>
+            <div>
+              <BsTelephone />
+              <input
+                type="text"
+                placeholder="(DD) xxxx-xxxx"
+                {...register("phone")}
+              />
+            </div>
+            {errors.phone && <small>{errors.phone.message}</small>}
 
-              {emailField && (
-                <>
-                  <div>
-                    <AiOutlineMail />
-                    <input
-                      type="email"
-                      placeholder="example@mail.com"
-                      {...register("email")}
-                    />
-                  </div>
+            <button onClick={() => setEmailField(!emailField)} type="button">
+              <AiOutlineMail />
+            </button>
 
-                  {errors.email && <small>{errors.email.message}</small>}
-                </>
-              )}
+            {emailField && (
+              <>
+                <div>
+                  <AiOutlineMail />
+                  <input
+                    type="email"
+                    placeholder="example@mail.com"
+                    {...register("email")}
+                  />
+                </div>
 
-              <div>
-                <button onClick={() => setOpenModal(false)}>Cancelar</button>
-                <button type="submit">Criar</button>
-              </div>
-            </form>
-          </div>
-        </section>
+                {errors.email && <small>{errors.email.message}</small>}
+              </>
+            )}
+
+            <div>
+              <button onClick={() => setOpenModal(false)}>Cancelar</button>
+              <button type="submit">Criar</button>
+            </div>
+          </form>
+        </ModalContainer>
       )}
 
       <Footer />

@@ -42,7 +42,7 @@ export default function () {
           messages.forEach((message) => toast.error(message));
         }
 
-        if (error.status === undefined) {
+        if (error.status === 501) {
           toast.error(
             "Desculpe, nosso servidor esta com problemas. Tente mais tarde!"
           );

@@ -41,7 +41,29 @@
             padding: 4px
             height: 25px
             width: 25px
-            color: color.$white
+            color: color.$black
             border: none
             border-radius: 4px
-            background-color: crimson
+
+            &:first-child
+                color: color.$white
+                background-color: crimson
+
+.title_modal
+    text-align: center
+    font-weight: 600
+    color: color.$white
+
+.form_modal
+    @include mixins.form-column
+
+    > div
+        display: flex
+        gap: 12px
+
+    > button
+        align-self: center
+        width: 50px
+
+    > div:last-child
+        background: none
