@@ -39,14 +39,18 @@ export default function ContactCard({
       setListContact(newListContact);
     } catch (error) {
       if (isAxiosError(error)) {
-        const message: string = error.response?.data.message;
+        if (error.status === 404) {
+          const message: string = error.response?.data.message;
 
-        toast.error(message);
+          toast.error(message);
+        }
+
+        if (error.status === undefined) {
+          toast.error(
+            "Desculpe, nosso servidor esta com problemas. Tente mais tarde!"
+          );
+        }
       }
-
-      toast.error(
-        "Desculpe, nosso servidor esta com problemas. Tente mais tarde!"
-      );
     }
   }
 

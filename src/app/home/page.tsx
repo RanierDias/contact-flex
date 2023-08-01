@@ -24,15 +24,21 @@ export default function Home() {
   const {
     register,
     handleSubmit,
-    formState: { errors },
-  } = useForm<ICreateContact>({ resolver: zodResolver(createContactSchema) });
+    reset,
+    formState: { errors, isSubmitSuccessful },
+  } = useForm<ICreateContact>({
+    resolver: zodResolver(createContactSchema),
+    defaultValues: { email: "user@mail.com" },
+  });
 
   const createContact: SubmitHandler<ICreateContact> = async (data) => {
     try {
       const token = localStorage.getItem("token");
+      const { fullname, phone } = data;
+      const payload = emailField ? { ...data } : { fullname, phone };
       const contactCreated = await apiContact.post<IContactResponse>(
         "contacts",
-        data,
+        payload,
         {
           headers: {
             Authorization: `Bearer ${token}`,
@@ -45,14 +51,24 @@ export default function Home() {
         : setContactList([contactCreated.data]);
     } catch (error) {
       if (isAxiosError(error)) {
-        const message: string = error.response?.data.message;
+        if (error.status === 400) {
+          const messages: string[] = error.response?.data.message;
 
-        toast.error(message);
+          messages.forEach((message) => toast.error(message));
+        }
+
+        if (error.status === 401) {
+          const message: string = error.response?.data.message;
+
+          toast.error(message);
+        }
+
+        if (error.status === undefined) {
+          toast.error(
+            "Desculpe, nosso servidor esta com problemas. Tente mais tarde!"
+          );
+        }
       }
-
-      toast.error(
-        "Desculpe, nosso servidor esta com problemas. Tente mais tarde!"
-      );
     }
   };
 
@@ -78,19 +94,27 @@ export default function Home() {
         setContactList(contacts.data);
       } catch (error) {
         if (isAxiosError(error)) {
-          const message: string = error.response?.data.message;
+          if (error.status === 401) {
+            const message: string = error.response?.data.message;
 
-          toast.error(message);
+            toast.error(message);
+          }
+
+          if (error.status === undefined) {
+            toast.error(
+              "Desculpe, nosso servidor esta com problemas. Tente mais tarde!"
+            );
+          }
         }
-
-        toast.error(
-          "Desculpe, nosso servidor esta com problemas. Tente mais tarde!"
-        );
       }
     }
 
     getContacts();
   }, [contactList]);
+
+  useEffect(() => {
+    reset({ fullname: "", phone: "", email: "user@mail.com" });
+  }, [isSubmitSuccessful]);
 
   return (
     <>
@@ -170,7 +194,7 @@ export default function Home() {
               </div>
               {errors.phone && <small>{errors.phone.message}</small>}
 
-              <button onClick={() => setEmailField(!emailField)}>
+              <button onClick={() => setEmailField(!emailField)} type="button">
                 <AiOutlineMail />
               </button>
 
