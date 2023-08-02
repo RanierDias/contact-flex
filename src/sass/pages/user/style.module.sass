@@ -1,0 +1,28 @@
+@use "../../color"
+@use "../../mixins"
+
+.user
+    height: 85vh
+    margin-top: 10vh
+
+    .container
+        h2
+            text-align: center
+
+        form
+            @include mixins.form-column
+            gap: 16px
+            margin-top: 20px
+
+            div
+                display: flex
+                gap: 10px
+
+            div:last-child
+                padding: 0
+                background: none
+
+                button:first-child
+                    background-color: crimson
+.container
+    @include mixins.container
