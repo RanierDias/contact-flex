@@ -1,8 +1,8 @@
 import { z } from "zod";
-import registerSchema from "./schema";
+import userSchema from "./schema";
 
-export interface IRegister extends z.infer<typeof registerSchema> {}
-export interface IRegisterResponse {
+export interface IUser extends z.infer<typeof userSchema> {}
+export interface IUserResponse {
   id: number;
   username: string;
   fullname: string;

@@ -6,9 +6,9 @@ import { RiLockPasswordLine } from "react-icons/ri";
 import { BsPersonBadge } from "react-icons/bs";
 import style from "@/sass/pages/register/style.module.sass";
 import { SubmitHandler, useForm } from "react-hook-form";
-import { IRegister, IRegisterResponse } from "./interface";
+import { IUser, IUserResponse } from "./interface";
 import { zodResolver } from "@hookform/resolvers/zod";
-import registerSchema from "./schema";
+import userSchema from "./schema";
 import apiContact from "@/api/contact";
 import { useRouter } from "next/navigation";
 import { ILoginResponse } from "../login/interfaces";
@@ -20,12 +20,12 @@ export default function () {
     register,
     handleSubmit,
     formState: { errors },
-  } = useForm<IRegister>({ resolver: zodResolver(registerSchema) });
+  } = useForm<IUser>({ resolver: zodResolver(userSchema) });
   const router = useRouter();
 
-  const registerUser: SubmitHandler<IRegister> = async (data) => {
+  const registerUser: SubmitHandler<IUser> = async (data) => {
     try {
-      const user = await apiContact.post<IRegisterResponse>("users", data);
+      const user = await apiContact.post<IUserResponse>("users", data);
       const login = await apiContact.post<ILoginResponse>("login", {
         credential: user.data.username,
         password: data.password,

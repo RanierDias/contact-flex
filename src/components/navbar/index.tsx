@@ -16,7 +16,7 @@ export default function Navbar() {
     <header className={style.navbar}>
       <div className={style.container}>
         <h1>
-          Contact{" "}
+          Contact
           <div>
             <span>Flex</span>
           </div>
@@ -24,19 +24,35 @@ export default function Navbar() {
 
         <nav>
           {pathRouter == "/home" && (
-            <button onClick={() => logout()}>Logout</button>
+            <>
+              <button onClick={() => logout()}>Logout</button>
+              <Link href="/user">Perfil</Link>
+            </>
+          )}
+          {pathRouter == "/" && (
+            <>
+              <Link href="/login">Entrar</Link>
+              <Link href="/register">Cadastrar</Link>
+            </>
+          )}
+          {pathRouter == "/login" && (
+            <>
+              <Link href="/">Home</Link>
+              <Link href="/register">Cadastrar</Link>
+            </>
+          )}
+          {pathRouter == "/register" && (
+            <>
+              <Link href="/">Home</Link>
+              <Link href="/login">Entrar</Link>
+            </>
           )}
 
-          {(pathRouter == "/" || pathRouter == "/register") && (
-            <Link href="/login">Entrar</Link>
-          )}
-
-          {(pathRouter == "/login" || pathRouter == "/register") && (
-            <Link href="/">Home</Link>
-          )}
-
-          {(pathRouter == "/" || pathRouter == "/login") && (
-            <Link href="/register">Cadastrar</Link>
+          {pathRouter == "/user" && (
+            <>
+              <button onClick={() => logout()}>Logout</button>
+              <Link href="/home">Contatos</Link>
+            </>
           )}
         </nav>
       </div>
